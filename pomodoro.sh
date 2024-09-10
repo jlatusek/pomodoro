@@ -9,10 +9,10 @@ rest_time=5
 # Start the timer
 while true; do
     # Work time
-    notify-send "Work time!" "Focus on your work for $work_time minutes" -w -t 3600000
+    notify-send "Work time!" "Focus on your work for $work_time minutes" -w -t 3600000 -A ok
     sleep $((work_time * 60))
 
     # Rest time
-    notify-send "Rest time!" "Take a break for $rest_time minutes" -w -t 3600000
+    notify-send "Rest time!" "Take a break for $rest_time minutes" -w -t 3600000 -A ok
     sleep $((rest_time * 60))
 done
