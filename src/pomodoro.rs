@@ -1,6 +1,6 @@
 use std::{thread, time::Duration};
 
-use crate::{icon::Tray, notification::Notification};
+use crate::{tray::Tray, notification::Notification};
 
 pub struct Pomodoro {
     short_break_time: Duration,
