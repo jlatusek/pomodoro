@@ -1,6 +1,6 @@
 use std::{thread, time::Duration};
 
-use crate::{tray::Tray, notification::Notification};
+use crate::notification::Notification;
 
 pub struct Pomodoro {
     short_break_time: Duration,
@@ -26,7 +26,6 @@ impl Pomodoro {
     }
 
     pub fn run(&self) {
-        let tray = Tray::new();
         loop {
             self.do_short_break();
             self.do_work();

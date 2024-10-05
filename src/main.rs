@@ -1,6 +1,5 @@
 use crate::pomodoro::Pomodoro;
 
-mod tray;
 mod notification;
 mod pomodoro;
 
