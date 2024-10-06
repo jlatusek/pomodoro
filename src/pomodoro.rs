@@ -1,11 +1,11 @@
 use std::{collections::HashMap, thread, time::Duration};
 
-use crate::notification::{Notification, NotifyStatus};
+use crate::notification::Notification;
 
 struct State {
     duration: Duration,
     notify: Notification,
-    next_states: Vec<States>,
+    next_state: States,
 }
 
 impl State {
@@ -18,9 +18,7 @@ impl State {
 #[derive(PartialEq, Eq, Hash)]
 enum States {
     ShortBreak,
-    PostponeShortBreak,
     Work,
-    PostponeWork,
 }
 
 pub struct Pomodoro {
@@ -39,7 +37,7 @@ impl Pomodoro {
                             "Go to work :))".to_string(),
                             format!("Go to work for {} minutes", work_time),
                         ),
-                        next_states: vec![States::ShortBreak, States::PostponeShortBreak],
+                        next_state: States::ShortBreak,
                     },
                 ),
                 (
@@ -50,23 +48,7 @@ impl Pomodoro {
                             "Short break".to_string(),
                             format!("Take a short break for {} minutes", short_break_time),
                         ),
-                        next_states: vec![States::Work, States::PostponeShortBreak],
-                    },
-                ),
-                (
-                    States::PostponeWork,
-                    State {
-                        duration: Duration::from_secs(60 * 5),
-                        notify: Notification::new("Postpone Work", "Ok you need some more chill"),
-                        next_states: vec![States::Work, States::PostponeWork],
-                    },
-                ),
-                (
-                    States::PostponeShortBreak,
-                    State {
-                        duration: Duration::from_secs(60 * 5),
-                        notify: Notification::new("Postpone Work", "Ok you need finish something"),
-                        next_states: vec![States::ShortBreak, States::PostponeShortBreak],
+                        next_state: States::Work,
                     },
                 ),
             ]),
@@ -75,15 +57,11 @@ impl Pomodoro {
 
     pub fn run(&self) {
         let mut state = &States::Work;
-        let mut notify_status: NotifyStatus;
         loop {
             let state_impl = &self.states[state];
+            state_impl.notify.show().expect("Notification went wrong");
             state_impl.count();
-            notify_status = state_impl.notify.show().expect("Notification went wrong");
-            state = match notify_status {
-                NotifyStatus::Accept => &state_impl.next_states[0],
-                NotifyStatus::Postpone => &state_impl.next_states[1],
-            };
+            state = &state_impl.next_state;
         }
     }
 }

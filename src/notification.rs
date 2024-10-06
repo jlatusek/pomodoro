@@ -1,8 +1,7 @@
 use std::process::Command;
 
 pub enum NotifyStatus {
-    Postpone,
-    Accept,
+    AcceptStateChange,
 }
 
 pub struct Notification {
@@ -25,11 +24,9 @@ impl Notification {
                 "-a",
                 "Pomodoro",
                 "-A",
-                "Postpone",
-                "-A",
-                "Accept",
+                "Ok",
                 "-t",
-                format!("{}", 30 * 1000).as_str(),
+                format!("{}", 3600 * 1000).as_str(),
                 "-w",
             ])
             .output()
@@ -37,8 +34,7 @@ impl Notification {
             .stdout;
         let output: i32 = (output[0] - 48).into();
         match output {
-            0 => Ok(NotifyStatus::Postpone),
-            1 => Ok(NotifyStatus::Accept),
+            0 => Ok(NotifyStatus::AcceptStateChange),
             _ => Err(
                 "It seems that we got different result from notify-send than was expected"
                     .to_string(),
