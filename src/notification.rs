@@ -32,6 +32,9 @@ impl Notification {
             .output()
             .expect("Failed to run notify-send program :((")
             .stdout;
+        if output.is_empty() {
+            return Err("It seems that response from notification app was empty".to_string());
+        }
         let output: i32 = (output[0] - 48).into();
         match output {
             0 => Ok(NotifyStatus::AcceptStateChange),

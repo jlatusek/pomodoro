@@ -59,7 +59,11 @@ impl Pomodoro {
         let mut state = &States::Work;
         loop {
             let state_impl = &self.states[state];
-            state_impl.notify.show().expect("Notification went wrong");
+            let result = state_impl.notify.show();
+            match result {
+                Ok(_) => {},
+                Err(e) => println!("{}", e)
+            }
             state_impl.count();
             state = &state_impl.next_state;
         }
