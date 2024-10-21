@@ -1,6 +1,6 @@
 use std::{collections::HashMap, thread, time::Duration};
 
-use crate::notification::Notification;
+use crate::notification::{Notification, NotifyStatus};
 
 struct State {
     duration: Duration,
@@ -60,11 +60,19 @@ impl Pomodoro {
         loop {
             let state_impl = &self.states[state];
             let result = state_impl.notify.show();
+            let mut skip_count: bool = true;
             match result {
-                Ok(_) => {},
-                Err(e) => println!("{}", e)
+                Ok(result) => {
+                    skip_count = match result {
+                        NotifyStatus::AcceptStateChange => false,
+                        NotifyStatus::SkipChange => true,
+                    }
+                }
+                Err(e) => println!("{}", e),
             }
-            state_impl.count();
+            if !skip_count {
+                state_impl.count();
+            }
             state = &state_impl.next_state;
         }
     }
