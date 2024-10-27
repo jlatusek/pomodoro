@@ -31,7 +31,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
         pomodoro.run()
     });
     dbus::watch_screen_lock().await?;
-    let out = handle.await.unwrap();
-    // println!("GOT{}", out);
+    let _ = handle.await.unwrap();
     Ok(())
 }
