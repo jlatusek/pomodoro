@@ -20,8 +20,6 @@ struct Args {
     work_time: u64,
 }
 
-// fn main() {
-// }
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
