@@ -1,12 +1,49 @@
+use rust_fsm::*;
 use std::collections::HashMap;
 use tokio::time::{sleep, Duration};
 
 use crate::notification::{Notification, NotifyStatus};
 
+state_machine! {
+    #[derive(Debug)]
+    #[repr(C)]
+    pomodoro(Idle)
+
+    Idle(StartWork) => Work,
+    Work => {
+        Continue => ExtendWork,
+        Skip => Skipped,
+        StartLongBreak => LongBreak,
+        StartShortBreak => ShortBreak,
+    },
+    ShortBreak => {
+        Continue => ExtendShortBreak,
+        Skip => Skipped,
+        StartWork => Work,
+    },
+    LongBreak => {
+        Continue => ExtendLongBreak,
+        Skip => Skipped,
+        StartWork => Work,
+    },
+    ExtendWork => {
+        Continue => ExtendWork,
+        StartLongBreak => LongBreak,
+        StartShortBreak => ShortBreak,
+    },
+    ExtendShortBreak => {
+        Continue => ExtendShortBreak,
+        StartWork => Work,
+    },
+    ExtendLongBreak => {
+        Continue => ExtendLongBreak,
+        StartWork => Work,
+    }
+}
+
 struct State {
     duration: Duration,
     notify: Notification,
-    next_state: States,
 }
 
 impl State {
@@ -14,12 +51,6 @@ impl State {
         println!("Count: {} minutes", self.duration.as_secs() / 60);
         sleep(self.duration).await;
     }
-}
-
-#[derive(PartialEq, Eq, Hash)]
-enum States {
-    ShortBreak,
-    Work,
 }
 
 pub struct Pomodoro {
