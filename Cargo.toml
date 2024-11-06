@@ -6,6 +6,7 @@ edition = "2021"
 [dependencies]
 clap = { version = "4.5.19", features = ["derive"] }
 futures-util = "0.3.31"
+rust-fsm = { version = "0.7.0", features = ["diagram"] }
 tokio = { version = "1.41.0", features = ["full"] }
 tokio-macros = "2.4.0"
 zbus = { version = "5.0.1", features = ["tokio"] }
