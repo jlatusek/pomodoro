@@ -1,4 +1,5 @@
-use std::{collections::HashMap, thread, time::Duration};
+use std::collections::HashMap;
+use tokio::time::{sleep, Duration};
 
 use crate::notification::{Notification, NotifyStatus};
 
@@ -9,9 +10,9 @@ struct State {
 }
 
 impl State {
-    fn count(&self) {
+    async fn count(&self) {
         println!("Count: {} minutes", self.duration.as_secs() / 60);
-        thread::sleep(self.duration);
+        sleep(self.duration).await;
     }
 }
 
@@ -55,11 +56,11 @@ impl Pomodoro {
         }
     }
 
-    pub fn run(&self) {
+    pub async fn run(&self) {
         let mut state = &States::Work;
         loop {
             let state_impl = &self.states[state];
-            let result = state_impl.notify.show();
+            let result = state_impl.notify.show().await;
             let mut skip_count: bool = true;
             match result {
                 Ok(result) => {
@@ -71,7 +72,7 @@ impl Pomodoro {
                 Err(e) => println!("{}", e),
             }
             if !skip_count {
-                state_impl.count();
+                state_impl.count().await;
             }
             state = &state_impl.next_state;
         }
