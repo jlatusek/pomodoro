@@ -1,4 +1,4 @@
-use tokio::process::Command;
+use std::process::Command;
 
 pub enum NotifyStatus {
     AcceptStateChange,
@@ -17,7 +17,7 @@ impl Notification {
             message: message.into(),
         }
     }
-    pub async fn show(&self) -> Result<NotifyStatus, String> {
+    pub fn show(&self) -> Result<NotifyStatus, String> {
         let output = Command::new("notify-send")
             .args([
                 self.title.as_str(),
@@ -33,7 +33,6 @@ impl Notification {
                 "-w",
             ])
             .output()
-            .await
             .expect("Failed to run notify-send program :((")
             .stdout;
         if output.is_empty() {
