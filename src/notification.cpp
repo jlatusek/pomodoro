@@ -23,9 +23,9 @@ void send_notification(const std::string &header, const std::string &msg)
         std::cout << "Notification sent, waiting for acceptance.\n";
         auto start = std::chrono::high_resolution_clock::now();
         waitpid(pid, nullptr, 0);
-        auto duration =
-            std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - start);
-        std::cout << std::format("Notification closed after: {} seconds\n", duration.count() / 1e6L);
+        auto duration = std::chrono::duration<float, std::chrono::seconds::period>(
+            std::chrono::high_resolution_clock::now() - start);
+        std::cout << std::format("Notification closed after: {} seconds\n", duration.count());
     }
     else
     {
