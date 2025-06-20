@@ -1,5 +1,15 @@
 ---
-Checks:          'clang-diagnostic-*,clang-analyzer-*,*'
+Checks: 'clang-diagnostic-*,
+  clang-analyzer-*,
+  *,
+  -llvmlibc-*,
+  -fuchsia-*,
+  -altera-*,
+  -objc-*,
+  -cppcoreguidelines-pro-type-vararg,
+  -hicpp-vararg,
+  '
+
 WarningsAsErrors: ''
 HeaderFileExtensions:
   - ''
@@ -24,9 +34,6 @@ CheckOptions:
   abseil-string-find-str-contains.AbseilStringsMatchHeader: 'absl/strings/match.h'
   abseil-string-find-str-contains.IncludeStyle: llvm
   abseil-string-find-str-contains.StringLikeClasses: '::std::basic_string;::std::basic_string_view;::absl::string_view'
-  altera-single-work-item-barrier.AOCVersion: '1600'
-  altera-struct-pack-align.MaxConfiguredAlignment: '128'
-  altera-unroll-loops.MaxLoopIterations: '100'
   android-comparison-in-temp-failure-retry.RetryMacros: TEMP_FAILURE_RETRY
   boost-use-ranges.IncludeBoostSystem: 'true'
   boost-use-ranges.IncludeStyle: llvm
@@ -271,7 +278,6 @@ CheckOptions:
   llvm-namespace-comment.ShortNamespaceLines: '1'
   llvm-namespace-comment.SpacesBeforeComments: '1'
   llvm-qualified-auto.AddConstToQualified: 'false'
-  llvmlibc-restrict-system-libc-headers.Includes: '-*'
   misc-const-correctness.AnalyzeReferences: 'true'
   misc-const-correctness.AnalyzeValues: 'true'
   misc-const-correctness.TransformPointersAsValues: 'false'
@@ -374,7 +380,6 @@ CheckOptions:
   modernize-use-transparent-functors.SafeMode: 'false'
   modernize-use-using.IgnoreExternC: 'false'
   modernize-use-using.IgnoreMacros: 'true'
-  objc-forbidden-subclassing.ForbiddenSuperClassNames: 'ABNewPersonViewController;ABPeoplePickerNavigationController;ABPersonViewController;ABUnknownPersonViewController;NSHashTable;NSMapTable;NSPointerArray;NSPointerFunctions;NSTimer;UIActionSheet;UIAlertView;UIImagePickerController;UITextInputMode;UIWebView'
   openmp-exception-escape.IgnoredExceptions: ''
   performance-enum-size.EnumIgnoreList: ''
   performance-faster-string-find.StringLikeClasses: '::std::basic_string;::std::basic_string_view'
