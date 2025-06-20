@@ -28,8 +28,12 @@ int main(int argc, char *argv[])
 
     while (true)
     {
-        std::cout << std::format("I'm going to sleep for {}\n", timeout);
-        std::this_thread::sleep_for(std::chrono::seconds(timeout));
+        for (auto i = timeout; i > 0; --i)
+        {
+            std::cout << std::format("\rTime left: {}", i) << std::flush;
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+        std::cout << "\n";
         send_notification("Get your eyes rest", "Take a short break for 5 minutes");
     }
     return 0;
