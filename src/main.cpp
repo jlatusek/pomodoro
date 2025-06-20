@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     {
         for (auto i = timeout; i > 0; --i)
         {
-            std::cout << std::format("\rTime left: {}", i) << std::flush;
+            std::cout << std::format("\rTime left: {}{}", i, std::string(32, ' ')) << std::flush;
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
         std::cout << "\n";
