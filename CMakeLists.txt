@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD 26)
 
 add_library(pomodoro_lib
         ${CMAKE_CURRENT_SOURCE_DIR}/src/pomodoro.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/notification.cpp
 )
 target_include_directories(pomodoro_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
